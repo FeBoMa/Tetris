@@ -11,6 +11,57 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <script>
+            var obj = {
+                espai: new Array(25),
+                piezas: new Array(),
+                puntuacion: 0,
+                puntuacionMax: 0,
+                piezaAct: null,
+                piezaNex: null,
+                piezaContador: new Array(7),
+                nivel: 1,
+                tiempo: 1000,
+
+                inicia: function ()
+                {
+                    for (var y = 0; y < this.espai.length; y++) {
+                        this.espai[y] = new Array(10);
+                        for (var x = 0; x < this.espai[y].length; x++) {
+                            this.espai[y][x] = 0;
+                        }
+                    }
+                    for (var i = 0; x < this.piezaContador.length; i++) {
+                        this.piezaContador[i] = 0;
+                    }
+
+                },
+
+                nextPieza: function ()
+                {
+                    var peces = [
+                        [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], "groc"],
+                        [[[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]], "lila"],
+                        [[[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]], "verd"],
+                        [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1], [0, 0, 0, 0]], "roig"],
+                        [[[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], "blau"],
+                        [[[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]], "taronga"],
+                        [[[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], "morat"]];
+                    var numeroAleatori = Math.round(Math.random() * 6);
+                    return peces[numeroAleatori];
+                },
+                movimientoAuto: function () {
+                    
+                    
+                },
+                movimientoJugador: function () {
+                    
+                },
+
+              
+
+            };
+
+        </script>
     </body>
 </html>
