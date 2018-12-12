@@ -9,10 +9,8 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
         <script>
-            var obj = {
+            var juego = {
                 espai: new Array(25),
                 piezas: new Array(),
                 puntuacion: 0,
@@ -22,7 +20,6 @@ and open the template in the editor.
                 piezaContador: new Array(7),
                 nivel: 1,
                 tiempo: 1000,
-
                 inicia: function ()
                 {
                     for (var y = 0; y < this.espai.length; y++) {
@@ -36,32 +33,153 @@ and open the template in the editor.
                     }
 
                 },
-
                 nextPieza: function ()
                 {
-                    var peces = [
-                        [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], "groc"],
-                        [[[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]], "lila"],
-                        [[[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]], "verd"],
-                        [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1], [0, 0, 0, 0]], "roig"],
-                        [[[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], "blau"],
-                        [[[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]], "taronga"],
-                        [[[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], "morat"]];
-                    var numeroAleatori = Math.round(Math.random() * 6);
-                    return peces[numeroAleatori];
+
                 },
                 movimientoAuto: function () {
-                    
-                    
+
+
                 },
                 movimientoJugador: function () {
-                    
-                },
 
-              
+                },
+                pintaTab: function () {
+                    for (var y = 0; y < this.espai.length; y++) {
+                        for (var x = 0; x < this.espai[y].length; x++) {
+                            if (x !== this.espai[y].length - 1) {
+                                document.write("<font color=\"grey\">█<\/font>");
+                            } else {
+                                document.write("<font color=\"black\">█<\/font><br>");
+                            }
+                        }
+                    }
+                }
 
             };
 
-        </script>
+            juego.inicia();
+            juego.pintaTab();
+
+
+            var tetris = {
+                pecesQueVanSorgint: new Array()
+            }
+
+            var Peça = function (forma, color, x, y)
+            {
+                this.forma = forma;
+                this.color = color;
+                this.x = x;
+                this.y = y;
+            };
+
+            Peça.prototype.moureDreta = function ()
+            {
+                this.y++;
+            };
+
+            Peça.prototype.moureEsquerra = function ()
+            {
+                this.y--;
+            };
+
+            Peça.prototype.moureAvall = function ()
+            {
+                this.x++;
+            };
+
+            var tetris = {
+                pecesQueVanSorgint: new Array()
+            }
+
+
+
+            function GeneraPecaAleatoria()
+            {
+                var peces = [
+                    [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], "groc"],
+                    [[[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]], "lila"],
+                    [[[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]], "verd"],
+                    [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1], [0, 0, 0, 0]], "roig"],
+                    [[[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], "blau"],
+                    [[[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]], "taronga"],
+                    [[[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], "morat"]]
+                var numeroAleatori = Math.round(Math.random() * 6);
+                return peces[numeroAleatori];
+            }
+
+            console.log(GeneraPecaAleatoria());
+            console.log(GeneraPecaAleatoria());
+            console.log(GeneraPecaAleatoria());
+            console.log(GeneraPecaAleatoria());
+            console.log(GeneraPecaAleatoria());
+            console.log(GeneraPecaAleatoria());
+
+
+            Peça.prototype.pintar = function ()
+            {
+                var resultat = "<table border='1'>";
+                for (var i = 0; i < this.forma.length; i++)
+                {
+                    resultat = resultat + "<tr>"
+                    for (var j = 0; j < this.forma[i].length; j++)
+                    {
+                        resultat = resultat + "<td>";
+                        if (this.forma[i][j] == 1) {
+                            resultat = resultat + "X"
+                        } else {
+                            resultat = resultat + "-"
+                        }
+                        ;
+                        resultat = resultat + "</td>";
+                    }
+                    resultat = resultat + "</tr>";
+                }
+                resultat = resultat + "</table>";
+                return resultat
+            };
+
+            var pa = GeneraPecaAleatoria();
+            var p = new Peça(pa[0], pa[1]);
+            //document.write(p.pintar());
+            document.getElementById("num").innerHTML = p.pintar();
+            document.write(p.pintar());
+
+            Peça.prototype.rotarDreta = function () {
+                var formaNova = new Array();
+                for (var i = 0; i < this.forma.length; i++) {
+                    formaNova[i] = new Array();
+                    for (var j = 0; j < this.forma[i].length; j++) {
+                        formaNova[i][j] = this.forma[this.forma[i].length - 1 - j][i];
+                    }
+                }
+                this.forma = formaNova;
+            }
+            p.rotarDreta();
+
+            document.getElementById("numi").innerHTML = p.pintar();
+            document.write(p.pintar());
+
+
+            Peça.prototype.rotarEsquerra = function () {
+                for (var i = 0; i < 2; i++) {
+                    var formaNova = new Array();
+                    for (var i = 0; i < this.forma.length; i++) {
+                        formaNova[i] = new Array();
+                        for (var j = 0; j < this.forma[i].length; j++) {
+                            formaNova[i][j] = this.forma[this.forma[i].length - 1 - j][i];
+                        }
+                    }
+                }
+                this.forma = formaNova;
+            }
+
+
+        </script>  
+    </head>
+    <body>
+        <div id="num">original</div>
+        <div id="numi">girada</div>
     </body>
 </html>
