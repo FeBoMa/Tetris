@@ -9,86 +9,125 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body id="all">
+
+        <img src="canvas/fondo.png"        id="fondo"      style="display: none;">
+        <img src="canvas/amarillo.png"     id="amarillo"     style="display: none;">
+        <img src="canvas/cian.png"         id="cian"   style="display: none;">
+
+        <canvas id="area" width="250" height="625" style="border:1px solid #d3d3d3;"></canvas>
+
         <script>
+
+
             var juego = {
-                espai: new Array(25),
+                espai: new Array(10),
                 piezas: new Array(),
                 puntuacion: 0,
                 puntuacionMax: 0,
-                piezaAct: null,
-                piezaNex: null,
+                piezaAct: 0,
+                piezaNex: new Array(4),
                 piezaContador: new Array(7),
                 nivel: 1,
                 tiempo: 1000,
                 inicia: function ()
                 {
                     for (var y = 0; y < this.espai.length; y++) {
-                        this.espai[y] = new Array(10);
+                        this.espai[y] = new Array(25);
                         for (var x = 0; x < this.espai[y].length; x++) {
                             this.espai[y][x] = 0;
                         }
+
                     }
+
                     for (var i = 0; x < this.piezaContador.length; i++) {
                         this.piezaContador[i] = 0;
                     }
-
+                    //this.espai[0][5] = 1;
                 },
                 nextPieza: function ()
                 {
-
+                    piezaNex = GeneraPecaAleatoria();
                 },
                 movimientoAuto: function () {
-
+                    p.y++;
 
                 },
                 movimientoJugador: function () {
 
                 },
                 pintaTab: function () {
+                    var c = document.getElementById("area");
+                    var ctx = c.getContext("2d");
+                    var img;
+
                     for (var y = 0; y < this.espai.length; y++) {
                         for (var x = 0; x < this.espai[y].length; x++) {
-                            if (x !== this.espai[y].length - 1) {
-                                document.write("<font color=\"grey\">█<\/font>");
+                            if (this.espai[y][x] == 0) {
+                                //document.write("<font color=\"grey\">█<\/font>");
+                                img = document.getElementById("fondo");
                             } else {
-                                document.write("<font color=\"black\">█<\/font><br>");
+                                img = document.getElementById("amarillo");
                             }
+
+                            for (var n = 0; n < p.forma.length; n++) {
+                                for (var m = 0; m < p.forma[n].length; m++) {
+                                    if (p.y + n == x && p.x + m == y && p.forma[n][m] == 1) {
+                                        img = document.getElementById("cian");
+                                    }
+                                }
+                            }
+                            ctx.drawImage(img, y * 25, x * 25, 25, 25);
+                        }
+                    }
+                },
+                colisionPiezas: function () {
+                    var c = document.getElementById("area");
+                    var ctx = c.getContext("2d");
+                    var img;
+                    for (var y = 0; y < p.forma.length; y++) {
+                        for (var x = 0; x < p.forma[y].length; x++) {
+                            if (p.forma[y][x] > this.espai[y + p.y][x + p.x]) {
+                                //img = document.getElementById("amarillo");
+                                //ctx.drawImage(img, (x + p.x) * 25, (y + p.y) * 25, 25, 25);
+                                if (p.forma[y][x] > this.espai[y + p.y][x + p.x + 1] && p.forma[y][x] != 0) {
+                                    img = document.getElementById("cian");
+                                    ctx.drawImage(img, (x + p.x) * 25, (y + p.y+1) * 25, 25, 25);
+                                    //p = new Peça(pa[0], pa[1], 2, 3);
+                                }
+
+                            }
+
                         }
                     }
                 }
+                //document.write(this.espai[0].length);
 
             };
-
-            juego.inicia();
-            juego.pintaTab();
-
-
             var tetris = {
                 pecesQueVanSorgint: new Array()
             }
 
-            var Peça = function (forma, color, x, y)
+            var Peça = function (forma, color, y, x)
             {
                 this.forma = forma;
                 this.color = color;
                 this.x = x;
                 this.y = y;
             };
-
             Peça.prototype.moureDreta = function ()
-            {
-                this.y++;
-            };
-
-            Peça.prototype.moureEsquerra = function ()
-            {
-                this.y--;
-            };
-
-            Peça.prototype.moureAvall = function ()
             {
                 this.x++;
             };
-
+            Peça.prototype.moureEsquerra = function ()
+            {
+                this.x--;
+            };
+            Peça.prototype.moureAvall = function ()
+            {
+                this.y++;
+            };
             var tetris = {
                 pecesQueVanSorgint: new Array()
             }
@@ -98,25 +137,37 @@ and open the template in the editor.
             function GeneraPecaAleatoria()
             {
                 var peces = [
-                    [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], "groc"],
-                    [[[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]], "lila"],
-                    [[[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]], "verd"],
-                    [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1], [0, 0, 0, 0]], "roig"],
-                    [[[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], "blau"],
-                    [[[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]], "taronga"],
-                    [[[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], "morat"]]
+                    [[[0, 0, 0, 0],
+                            [0, 1, 1, 0],
+                            [0, 1, 1, 0],
+                            [0, 0, 0, 0]], "amarillo"],
+                    [[[0, 1, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 1, 0, 0]], "lila"],
+                    [[[0, 0, 0, 0],
+                            [0, 1, 1, 0],
+                            [1, 1, 0, 0],
+                            [0, 0, 0, 0]], "verd"],
+                    [[[0, 0, 0, 0],
+                            [0, 1, 1, 0],
+                            [0, 0, 1, 1],
+                            [0, 0, 0, 0]], "roig"],
+                    [[[0, 1, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 1, 1, 0],
+                            [0, 0, 0, 0]], "blau"],
+                    [[[0, 1, 1, 0],
+                            [0, 1, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 0, 0, 0]], "taronga"],
+                    [[[0, 0, 0, 0],
+                            [1, 1, 1, 0],
+                            [0, 1, 0, 0],
+                            [0, 0, 0, 0]], "morat"]]
                 var numeroAleatori = Math.round(Math.random() * 6);
                 return peces[numeroAleatori];
             }
-
-            console.log(GeneraPecaAleatoria());
-            console.log(GeneraPecaAleatoria());
-            console.log(GeneraPecaAleatoria());
-            console.log(GeneraPecaAleatoria());
-            console.log(GeneraPecaAleatoria());
-            console.log(GeneraPecaAleatoria());
-
-
             Peça.prototype.pintar = function ()
             {
                 var resultat = "<table border='1'>";
@@ -139,13 +190,12 @@ and open the template in the editor.
                 resultat = resultat + "</table>";
                 return resultat
             };
-
             var pa = GeneraPecaAleatoria();
-            var p = new Peça(pa[0], pa[1]);
-            //document.write(p.pintar());
-            document.getElementById("num").innerHTML = p.pintar();
-            document.write(p.pintar());
+            var p = new Peça(pa[0], pa[1], 2, 3);
 
+            document.write(p.pintar());
+            //document.getElementById("num").innerHTML = p.pintar();
+            //document.write(p.pintar());
             Peça.prototype.rotarDreta = function () {
                 var formaNova = new Array();
                 for (var i = 0; i < this.forma.length; i++) {
@@ -156,12 +206,9 @@ and open the template in the editor.
                 }
                 this.forma = formaNova;
             }
-            p.rotarDreta();
-
-            document.getElementById("numi").innerHTML = p.pintar();
-            document.write(p.pintar());
-
-
+            //p.rotarDreta();
+            //document.getElementById("numi").innerHTML = p.pintar();
+            //document.write(p.pintar());
             Peça.prototype.rotarEsquerra = function () {
                 for (var i = 0; i < 2; i++) {
                     var formaNova = new Array();
@@ -176,10 +223,21 @@ and open the template in the editor.
             }
 
 
+
+
+
+
+            juego.inicia();
+            var todo = setInterval(function () {
+                //document.addEventListener("keydown", pulsa);
+                juego.pintaTab();
+                juego.movimientoAuto();
+                juego.colisionPiezas();
+                //document.write(p.y);
+            }, 1000);
+
+
+
         </script>  
-    </head>
-    <body>
-        <div id="num">original</div>
-        <div id="numi">girada</div>
     </body>
 </html>

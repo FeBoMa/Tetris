@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <img src="canvas/fondo.png"        id="fondo"      style="display: none;">
+        <img src="canvas/amarillo.png"     id="amarillo"     style="display: none;">
+        <img src="canvas/cian.png"         id="cian"   style="display: none;">
+
+        <canvas id="myCanvas" width="240" height="297" style="border:1px solid #d3d3d3;"></canvas>
+
+
+        <script>
+
+            function pintar2() {
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+                var img = document.getElementById("fondo");
+                ctx.drawImage(img, 50, 0, 50, 50);
+            }
+
+            //pintar2();
+            window.onload = pintar2;
+            
+            //pintaFicha();
+        </script>
+
+
+
+
+
+
+    </body>
+</html>
