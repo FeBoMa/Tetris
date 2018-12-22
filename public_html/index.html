@@ -289,22 +289,22 @@ and open the template in the editor.
                 realizado = false;
                 switch (e.keyCode) {
                     case 65:
-                        pared("izq");
+                        direcciones("izq");
                         break;
                     case 87:
-                        pared("rota");
+                        direcciones("rota");
                         break;
                     case 68:
-                        pared("der");
+                        direcciones("der");
                         break;
                     case 83:
-                        console.log("s");
+                        direcciones("baja");
                         break;
                 }
             }
 
 
-            function pared(dir) {
+            function direcciones(dir) {
                 var dire = [];
                 var p3 = new Peça(p.forma, p.color, p.y, p.x);
                 p3.rotarDreta();
@@ -327,6 +327,11 @@ and open the template in the editor.
                                         dire.push(1);
                                     }
                                     break;
+                                case "baja":
+                                    if (p3.forma[yP][xP] == 9 && (juego.espai[yP + p3.y + 1][xP + p3.x] != 0)) {
+                                        dire.push(1);
+                                    }
+                                    break;
                             }
                         }
                     }
@@ -345,6 +350,13 @@ and open the template in the editor.
                     case "rota":
                         if (dire.length == 0) {
                             p.rotarDreta();
+                        }
+                        break;
+                    case "baja":
+                        if (dire.length == 0) {
+                            p.y++;
+                            juego.puntuacion += 1;
+                            juego.pintaTab();
                         }
                         break;
                 }
