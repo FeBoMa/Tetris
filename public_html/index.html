@@ -15,15 +15,21 @@ and open the template in the editor.
         <img src="canvas/fondo.png"        id="fondo"      style="display: none;">
         <img src="canvas/amarillo.png"     id="amarillo"     style="display: none;">
         <img src="canvas/cian.png"         id="cian"   style="display: none;">
+        <img src="canvas/lila.png"         id="lila"   style="display: none;">
+        <img src="canvas/marron.png"         id="marron"   style="display: none;">
+        <img src="canvas/naranja.png"         id="naranja"   style="display: none;">
+        <img src="canvas/rojo.png"         id="rojo"   style="display: none;">
+        <img src="canvas/verde.png"         id="verde"   style="display: none;">
+        <img src="canvas/borde.png"         id="bordes"   style="display: none;">
 
-        <canvas id="area" width="250" height="625" style="border:1px solid #d3d3d3;"></canvas>
+        <canvas id="area" width="275" height="650" style="border:1px solid #d3d3d3;"></canvas>
         <canvas id="pieza" width="100" height="100" style="border:1px solid #d3d3d3;"></canvas>
 
         <script>
 
 
             var juego = {
-                espai: new Array(25),
+                espai: new Array(26),
                 piezas: new Array(),
                 puntuacion: 0,
                 puntuacionMax: 0,
@@ -35,7 +41,7 @@ and open the template in the editor.
                 inicia: function ()
                 {
                     for (var y = 0; y < this.espai.length; y++) {
-                        this.espai[y] = new Array(10);
+                        this.espai[y] = new Array(11);
                         for (var x = 0; x < this.espai[y].length; x++) {
                             this.espai[y][x] = 0;
                         }
@@ -45,8 +51,13 @@ and open the template in the editor.
                     for (var i = 0; x < this.piezaContador.length; i++) {
                         this.piezaContador[i] = 0;
                     }
-                    for (var i = 0; i < 10; i++) {
-                        //this.espai[this.espai.length - 1][i] = 1;
+                    for (var i = 0; i < 11; i++) {
+                        this.espai[this.espai.length - 1][i] = 8;
+
+                    }
+                    for (var i = 0; i < 25; i++) {
+                        this.espai[i][0] = 8;
+                        this.espai[i][10] = 8;
                     }
                 },
                 nextPieza: function ()
@@ -66,61 +77,93 @@ and open the template in the editor.
                     var img2;
                     for (var y = 0; y < this.espai.length; y++) {
                         for (var x = 0; x < this.espai[y].length; x++) {
-                            if (this.espai[y][x] == 0) {
-                                img = document.getElementById("fondo");
-                            } else {
-                                img = document.getElementById("amarillo");
+                            switch (this.espai[y][x]) {
+                                case 0:
+                                    img = document.getElementById("fondo");
+                                    break;
+                                case 1:
+                                    img = document.getElementById("amarillo");
+                                    break;
+                                case 2:
+                                    img = document.getElementById("cian");
+                                    break;
+                                case 3:
+                                    img = document.getElementById("lila");
+                                    break;
+                                case 4:
+                                    img = document.getElementById("marron");
+                                    break;
+                                case 5:
+                                    img = document.getElementById("naranja");
+                                    break;
+                                case 6:
+                                    img = document.getElementById("rojo");
+                                    break;
+                                case 7:
+                                    img = document.getElementById("verde");
+                                    break;
+                                case 8:
+                                    img = document.getElementById("bordes");
+                                    break;
                             }
-
                             ctx.drawImage(img, x * 25, y * 25, 25, 25);
                         }
                     }
-                    for (var yP = 0; yP < p.forma.length; yP++) {
-                        for (var xP = 0; xP < p.forma[yP].length; xP++) {
-                            if (p.forma[yP][xP] === this.espai[yP + p.y][xP + p.x] && p.forma[yP][xP] > 0 || (yP+p.y) === this.espai.length-1) { //arreglar
-                                //p.y--;
-                                meteficha();
-                                crea();
-                            } else if (p.forma[yP][xP] > this.espai[yP + p.y][xP + p.x]) {
-                                img2 = document.getElementById("cian");
-                                ctx.drawImage(img2, (xP + p.x) * 25, (yP + p.y) * 25, 25, 25);
+                    for (var yP = 0; yP < 4; yP++) {
+                        for (var xP = 0; xP < 4; xP++) {
+                            if ((yP + p.y) > -1) {
+                                if (p.forma[yP][xP] > this.espai[yP + p.y][xP + p.x]) {
+                                    img2 = document.getElementById(p.color);
+                                    ctx.drawImage(img2, (xP + p.x) * 25, (yP + p.y) * 25, 25, 25);
+                                    this.colisionPiezas(yP, xP);
+                                }
+
                             }
                         }
                     }
                 },
-                colisionPiezas: function () {
-                    /*
-                     var c = document.getElementById("area");
-                     var ctx = c.getContext("2d");
-                     var img;
-                     
-                     
-                     
-                     
-                     
-                     for (var y = 0; y < p.forma.length; y++) {
-                     for (var x = 0; x < p.forma[y].length; x++) {
-                     
-                     if (p.forma[y][x] != this.espai[y + p.x][x + p.y]) {
-                     img = document.getElementById("amarillo");
-                     
-                     ctx.drawImage(img, (x + p.x) * 25, (y + p.y) * 25, 25, 25);
-                     } else {
-                     crea();
-                     }
-                     
-                     
-                     //&& (y + p.y) < this.espai[0].length
-                     }
-                     }*/
+                colisionPiezas: function (yP, xP) {
+                    var c = document.getElementById("area");
+                    var ctx = c.getContext("2d");
+                    var img;
+                    if (p.forma[yP][xP] === 9 && (this.espai[yP + p.y + 1][xP + p.x] !=0 || (yP + p.y) == 24)) {
+                        img = document.getElementById("bordes");
+                        ctx.drawImage(img, (xP + p.x) * 25, (yP + p.y) * 25, 25, 25);
+                        meteficha(p.color);
+                        crea();
+
+
+                    }
                 }
 
             };
-            function meteficha() {
+            function meteficha(color) {
                 for (var yP = 0; yP < p.forma.length; yP++) {
                     for (var xP = 0; xP < p.forma[yP].length; xP++) {
-                        if (p.forma[yP][xP] == 1) {
-                            juego.espai[yP + p.y][xP + p.x] = 1;
+                        if (p.forma[yP][xP] == 9) {
+                            switch (color) {
+                                case "amarillo":
+                                    juego.espai[yP + p.y][xP + p.x] = 1;
+                                    break;
+                                case "cian":
+                                    juego.espai[yP + p.y][xP + p.x] = 2;
+                                    break;
+                                case "lila":
+                                    juego.espai[yP + p.y][xP + p.x] = 3;
+                                    break;
+                                case "marron":
+                                    juego.espai[yP + p.y][xP + p.x] = 4;
+                                    break;
+                                case "naranja":
+                                    juego.espai[yP + p.y][xP + p.x] = 5;
+                                    break;
+                                case "rojo":
+                                    juego.espai[yP + p.y][xP + p.x] = 6;
+                                    break;
+                                case "verde":
+                                    juego.espai[yP + p.y][xP + p.x] = 7;
+                                    break;
+                            }
                         }
                     }
                 }
@@ -159,33 +202,33 @@ and open the template in the editor.
             {
                 var peces = [
                     [[[0, 0, 0, 0],
-                            [0, 1, 1, 0],
-                            [0, 1, 1, 0],
+                            [0, 9, 9, 0],
+                            [0, 9, 9, 0],
                             [0, 0, 0, 0]], "amarillo"],
-                    [[[0, 1, 0, 0],
-                            [0, 1, 0, 0],
-                            [0, 1, 0, 0],
-                            [0, 1, 0, 0]], "lila"],
+                    [[[0, 9, 0, 0],
+                            [0, 9, 0, 0],
+                            [0, 9, 0, 0],
+                            [0, 9, 0, 0]], "cian"],
                     [[[0, 0, 0, 0],
-                            [0, 1, 1, 0],
-                            [1, 1, 0, 0],
-                            [0, 0, 0, 0]], "verd"],
+                            [0, 9, 9, 0],
+                            [9, 9, 0, 0],
+                            [0, 0, 0, 0]], "lila"],
                     [[[0, 0, 0, 0],
-                            [0, 1, 1, 0],
-                            [0, 0, 1, 1],
-                            [0, 0, 0, 0]], "roig"],
-                    [[[0, 1, 0, 0],
-                            [0, 1, 0, 0],
-                            [0, 1, 1, 0],
-                            [0, 0, 0, 0]], "blau"],
-                    [[[0, 1, 1, 0],
-                            [0, 1, 0, 0],
-                            [0, 1, 0, 0],
-                            [0, 0, 0, 0]], "taronga"],
+                            [0, 9, 9, 0],
+                            [0, 0, 9, 9],
+                            [0, 0, 0, 0]], "marron"],
+                    [[[0, 9, 0, 0],
+                            [0, 9, 0, 0],
+                            [0, 9, 9, 0],
+                            [0, 0, 0, 0]], "naranja"],
+                    [[[0, 9, 9, 0],
+                            [0, 9, 0, 0],
+                            [0, 9, 0, 0],
+                            [0, 0, 0, 0]], "rojo"],
                     [[[0, 0, 0, 0],
-                            [1, 1, 1, 0],
-                            [0, 1, 0, 0],
-                            [0, 0, 0, 0]], "morat"]]
+                            [9, 9, 9, 0],
+                            [0, 9, 0, 0],
+                            [0, 0, 0, 0]], "verde"]]
                 var numeroAleatori = Math.round(Math.random() * 6);
                 return peces[numeroAleatori];
             }
@@ -209,17 +252,14 @@ and open the template in the editor.
             function crea() {
                 pa = GeneraPecaAleatoria();
                 p = p2;
-                p2 = new Peça(pa[0], pa[1], 0, 3);
+                p2 = new Peça(pa[0], pa[1], -3, 3);
                 console.log("crea");
             }
 
             var pa = GeneraPecaAleatoria();
-            var p = new Peça(pa[0], pa[1], 10, 3);
+            var p = new Peça(pa[0], pa[1], -3, 3);
             pa = GeneraPecaAleatoria();
-            var p2 = new Peça(pa[0], pa[1], 0, 3);
-            //document.write(p.pintar());
-            //document.getElementById("num").innerHTML = p.pintar();
-            //document.write(p.pintar());
+            var p2 = new Peça(pa[0], pa[1], -3, 3);
             Peça.prototype.rotarDreta = function () {
                 var formaNova = new Array();
                 for (var i = 0; i < this.forma.length; i++) {
@@ -231,7 +271,7 @@ and open the template in the editor.
                 this.forma = formaNova;
             }
             //p.rotarDreta();
-            //document.getElementById("numi").innerHTML = p.pintar();
+
             //document.write(p.pintar());
             Peça.prototype.rotarEsquerra = function () {
                 for (var i = 0; i < 2; i++) {
@@ -246,20 +286,14 @@ and open the template in the editor.
                 this.forma = formaNova;
             }
 
-
-
-
-
-
             juego.inicia();
             var todo = setInterval(function () {
                 //document.addEventListener("keydown", pulsa);
                 juego.pintaTab();
                 juego.movimientoAuto();
-                juego.colisionPiezas();
                 p2.pintar2()
                 //document.write(p.y);
-            }, 500);
+            }, 100);
 
 
 
