@@ -126,13 +126,11 @@ and open the template in the editor.
                     var c = document.getElementById("area");
                     var ctx = c.getContext("2d");
                     var img;
-                    if (p.forma[yP][xP] === 9 && (this.espai[yP + p.y + 1][xP + p.x] !=0 || (yP + p.y) == 24)) {
-                        img = document.getElementById("bordes");
+                    if (p.forma[yP][xP] === 9 && (this.espai[yP + p.y + 1][xP + p.x] != 0 || (yP + p.y) == 24)) {
+                        img = document.getElementById("bordes"); //para ver las colisiones
                         ctx.drawImage(img, (xP + p.x) * 25, (yP + p.y) * 25, 25, 25);
                         meteficha(p.color);
                         crea();
-
-
                     }
                 }
 
@@ -286,17 +284,85 @@ and open the template in the editor.
                 this.forma = formaNova;
             }
 
+            function pulsa(e) {
+                //Izquierda = A
+                //Derecha = D
+                //Abajo = S
+                //Gira = W
+                realizado = false;
+                switch (e.keyCode) {
+                    case 65:
+                        pared("izq");
+                        break;
+                    case 87:
+                        p.rotarDreta();
+                        break;
+                    case 68:
+                        pared("der");
+                        break;
+                    case 83:
+                        console.log("s");
+                        break;
+                }
+            }
+
+
+            function pared(dir) {
+                var dire = [];
+                for (var yP = 0; yP < 4; yP++) {
+                    for (var xP = 0; xP < 4; xP++) {
+                        if ((yP + p.y) > -1) {
+                            switch (dir) {
+                                case "izq":
+                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x - 1] != 0) && xP == 0) {
+                                        dire.push(1);
+                                    }
+                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x - 1] != 0) && xP == 1) {
+                                        dire.push(1);
+                                    }
+                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x - 1] != 0) && xP == 2) {
+                                        dire.push(1);
+                                    }
+                                    break;
+                                case "der":
+                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x + 1] != 0) && xP == 3) {
+                                        dire.push(1);
+                                    }
+                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x + 1] != 0) && xP == 2) {
+                                        dire.push(1);
+                                    }
+                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x + 1] != 0) && xP == 1) {
+                                        dire.push(1);
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+                switch (dir) {
+                    case "izq":
+                        if (dire.length == 0) {
+                            p.x--;
+                        }
+                        break;
+                    case "der":
+                        if (dire.length == 0) {
+                            p.x++;
+                        }
+                        break;
+                }
+
+            }
+
             juego.inicia();
             var todo = setInterval(function () {
-                //document.addEventListener("keydown", pulsa);
+                document.addEventListener("keydown", pulsa);
                 juego.pintaTab();
                 juego.movimientoAuto();
-                p2.pintar2()
+                p2.pintar2();
                 //document.write(p.y);
-            }, 100);
-
-
-
+            }
+            , 250);
         </script>  
     </body>
 </html>
