@@ -314,24 +314,12 @@ and open the template in the editor.
                         if ((yP + p.y) > -1) {
                             switch (dir) {
                                 case "izq":
-                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x - 1] != 0) && xP == 0) {
-                                        dire.push(1);
-                                    }
-                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x - 1] != 0) && xP == 1) {
-                                        dire.push(1);
-                                    }
-                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x - 1] != 0) && xP == 2) {
+                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x - 1] != 0)) {
                                         dire.push(1);
                                     }
                                     break;
                                 case "der":
-                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x + 1] != 0) && xP == 3) {
-                                        dire.push(1);
-                                    }
-                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x + 1] != 0) && xP == 2) {
-                                        dire.push(1);
-                                    }
-                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x + 1] != 0) && xP == 1) {
+                                    if (p.forma[yP][xP] == 9 && (juego.espai[yP + p.y][xP + p.x + 1] != 0)) {
                                         dire.push(1);
                                     }
                                     break;
