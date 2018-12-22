@@ -25,12 +25,51 @@ and open the template in the editor.
                 var ctx = c.getContext("2d");
                 var img = document.getElementById("fondo");
                 ctx.drawImage(img, 50, 0, 50, 50);
+                var x = 10;
+                var y = 0;
+                if (x < y) {
+                    console.log("true");
+                }
+            }
+
+
+
+            function pulsa(e) {
+                //0=Izquierda 1=Arriba 2=Derecha 3=Abajo
+                realizado = false;
+                switch (e.keyCode) {
+                    case 65:
+                        //personajes[0][3] = 0;//a
+                        console.log("a");
+                break;
+                    case 87:
+                        console.log("w");
+                        //personajes[0][3] = 1;//w
+                        break;
+                    case 68:
+                        console.log("d");
+                        //personajes[0][3] = 2;//d
+                        break;
+                    case 83:
+                        console.log("s");
+                        //personajes[0][3] = 3;//s
+                        
+                        break;
+                }
             }
 
             //pintar2();
-            window.onload = pintar2;
-            
+            //window.onload = pintar2;
+
             //pintaFicha();
+            var todo = setInterval(function () {
+
+                document.addEventListener("keydown", pulsa);
+
+                //mueve();
+            }, 250);
+
+
         </script>
 
 
